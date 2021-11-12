@@ -1,3 +1,4 @@
+
 const router = require('express').Router(),
 jobController = require('../controllers/job')
 router.get('/',jobController.getAllJob)
