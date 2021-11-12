@@ -7,11 +7,10 @@ const checkAuth = async(req,res,next)=>{
         throw new AuthError(ErrorMessages.UnAuthorized)
     }
     const token = authHeader.split(' ')[1]
-
     try {
         const decode = await jwt.decode(token,process.env.JWT_SECRET)
         const {id,name} = decode
-        req = {user:{id:id,name:name}}
+        req.user = {id:id,name:name}
         next()
     }catch(error){
         throw new AuthError(ErrorMessages.UnAuthorized)
