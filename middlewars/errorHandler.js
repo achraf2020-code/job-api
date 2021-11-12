@@ -1,11 +1,23 @@
 const {StatusCodes} = require('http-status-codes')
 const errorMessages = require('../messages/ErrorMessages')
+const ErrorApi = require('../CustomErrors/error')
 const errorHandler = (err,req,res,next)=>{
     const customError = {
-        message : err.message || errorMessages.InternalServerError   ,
-        statusCode :  err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR 
+        message : err.message ||  "Something went wrong try again later!"  ,
+        statusCode : err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
+    }
+    if(err.code && err.code ===11000){
+        customError.message = `${Object.keys(err.keyValue)} alerdy exist!`
+        customError.statusCode = StatusCodes.BAD_REQUEST
+    }
+    if(err.name ==='ValidationError'){
+        customError.message = Object.values(err.errors)
+                            .map((item)=>item.message)
+                            .join(',')
+        customError.statusCode = StatusCodes.BAD_REQUEST
     }
     
-    res.status(err.statusCode).json({error:err.message})
+    
+    res.status(customError.statusCode).json({error:customError.message})
 }
 module.exports = errorHandler

@@ -1,11 +1,11 @@
 const express = require('express')
-const dotenv = require('dotenv')
+const dotenv =  require('dotenv')
 
 //app required files
 
 const appRoutes = require('./routes')
 const dbConnect = require('./db/dbConnect')
-const notFound = require('./middlewars/404')
+const notFound  = require('./middlewars/404')
 const errorHandler = require('./middlewars/errorHandler')
 
 //app configure
