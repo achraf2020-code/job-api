@@ -1,8 +1,12 @@
+const {BadRequestError,AuthError} = require('../CustomErrors')
+const errorMessages = require('../messages/ErrorMessages')
+require('express-async-errors')
 module.exports = {
-    login:(req,res)=>{
+    login:async(req,res)=>{
+        throw new BadRequestError(errorMessages.BadRequest)
         res.send('im login route')
     },
-    register:(req,res)=>{
+    register:async(req,res)=>{
         res.send('im register route')
     }
 }

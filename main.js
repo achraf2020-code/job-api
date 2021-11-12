@@ -2,8 +2,10 @@ const express = require('express')
 const dotenv = require('dotenv')
 
 //app required files
+
 const appRoutes = require('./routes')
 const notFound = require('./middlewars/404')
+const errorHandler = require('./middlewars/errorHandler')
 
 //app configure
 const app = express()
@@ -13,6 +15,7 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 app.use('/api/v1',appRoutes)
 app.use(notFound)
+app.use(errorHandler)
 
 // app routes 
 app.get('/',(req,res)=>{
