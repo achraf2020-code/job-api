@@ -35,9 +35,28 @@ module.exports ={
         // res.send('create job')
     },
     updateOneJob:async(req,res)=>{
-        res.send('update one job')
+        const jobId = req.params.id
+        const {id} = req.user
+        const {position,company,status} = req.body
+        const updatedInfo = {
+                position:position,
+                company:company,
+                status:status,
+        }
+        const updatedJob = await Jobs.findOneAndUpdate({_id:jobId,createdBy:id},updatedInfo,{new:true,runValidator:true})
+        if(!updatedJob){
+            throw new NotFoundError(errorMessages.NotFoundError)
+        }
+        res.status(StatusCodes.OK).json(updatedJob)
     },
     deleteOneJob:async(req,res)=>{
-        res.send('delete on job')
+        const jobId = req.params.id
+        const {id} = req.user
+        const deletedJob = await Jobs.findOneAndDelete({_id:jobId,createdBy:id})
+        if(!deletedJob){
+            throw new NotFoundError(errorMessages.NotFoundError)
+        }
+        res.status(StatusCodes.OK).json(deletedJob)
+
     }
 }

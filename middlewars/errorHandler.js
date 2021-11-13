@@ -6,14 +6,18 @@ const errorHandler = (err,req,res,next)=>{
         message : err.message ||  "Something went wrong try again later!"  ,
         statusCode : err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
     }
+    if(err.name = "CastError"){
+        customError.message = `No Job found!`
+        customError.statusCode = StatusCodes.NOT_FOUND
+    }
     if(err.code && err.code ===11000){
         customError.message = `${Object.keys(err.keyValue)} alerdy exist!`
         customError.statusCode = StatusCodes.BAD_REQUEST
     }
     if(err.name ==='ValidationError'){
         customError.message = Object.values(err.errors)
-                            .map((item)=>item.message)
-                            .join(',')
+                                .map((item)=>item.message)
+                                .join(',')
         customError.statusCode = StatusCodes.BAD_REQUEST
     }
     
