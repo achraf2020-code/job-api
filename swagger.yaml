@@ -1,0 +1,311 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Job Api
+  description: Job API
+  contact:
+    email: achraf-saidi@outlook.com
+    name: Achraf Saidi
+host: jobapidoc.herokuapp.com
+basePath: /
+securityDefinitions: {}
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /api/v1/auth/login:
+    post:
+      description: User login route
+      summary: login
+      tags:
+      - Auth
+      operationId: login
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/LoginRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /api/v1/auth/register:
+    post:
+      summary: register
+      tags:
+      - Auth
+      operationId: register
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/RegisterRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /api/v1/job:
+    get:
+      summary: get All Job
+      tags:
+      - Job
+      operationId: getAllJob
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: create Job
+      tags:
+      - Job
+      operationId: createJob
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          example:
+            company: Netflex
+            position: Engingeer
+            status: interview
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /api/v1/job/{id}:
+    get:
+      summary: get One Job
+      tags:
+      - Job
+      operationId: getOneJob
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+       - in: path
+         name: id   # Note the name is the same as in the path
+         type: integer
+         required: true
+         minimum: 1
+         description: The Job ID
+       - in: header
+         name: Authorization
+         required: true
+         default: Bearer {token}
+         type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    patch:
+      summary: update one job
+      tags:
+      - Job
+      operationId: updateonejob
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id   # Note the name is the same as in the path
+        type: integer
+        required: true
+        minimum: 1
+        description: The Job ID
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          example:
+            company: Nokia
+            position: Developer
+            status: interview
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    delete:
+      summary: delete One Job
+      tags:
+      - Job
+      operationId: deleteOneJob
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id   # Note the name is the same as in the path
+        type: integer
+        required: true
+        minimum: 1
+        description: The Job ID
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /:
+    get:
+      summary: Doc Page
+      tags:
+      - Misc
+      operationId: indexPage
+      deprecated: false
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+definitions:
+  LoginRequest:
+    title: LoginRequest
+    example:
+      email: test2@email.com
+      password: secret
+    type: object
+    properties:
+      email:
+        description: user Email
+        example: test@email.com
+        type: string
+        default: test2@email.com
+      password:
+        description: user password
+        example: secret
+        type: string
+        default: secret
+    required:
+    - email
+    - password
+  RegisterRequest:
+    title: RegisterRequest
+    description: Register new user
+    example:
+      name: test2
+      email: test3010@email.com
+      password: secret
+    type: object
+    properties:
+      name:
+        description: user name
+        example: Your user name
+        type: string
+        default: UserName
+      email:
+        description: User Email
+        example: test@email.com
+        type: string
+        default: test@email.com
+      password:
+        description: User password
+        example: secret
+        type: string
+        default: secret
+    required:
+    - name
+    - email
+    - password
+  CreateJobRequest:
+    title: CreateJobRequest
+    description: Create new job
+    example:
+      company: Netflex
+      position: Engingeer
+      status: interview
+    type: object
+    properties:
+      company:
+        description: name of compay
+        example: Company Name
+        type: string
+        default: CompanyName
+      position:
+        description: job position
+        example: Manager
+        type: string
+        default: Developer
+      status:
+        description: status of job (interview,decelined,pending)
+        example: interview
+        type: string
+        default: interview
+    required:
+    - company
+    - position
+    - status
+  UpdateOneJobRequest:
+    title: UpdateOneJobRequest
+    description: update user Job
+    example:
+      company: Nokia
+      position: Developer
+      status: interview
+    type: object
+    properties:
+      company:
+        description: updated company name
+        example: Nokia
+        type: string
+      position:
+        description: updated position
+        example: Developer
+        type: string
+      status:
+        description: updated job status
+        example: interview,decilend,pending,
+        type: string
+    required:
+    - company
+    - position
+    - status
+tags:
+- name: Auth
+- name: Job
+- name: Misc
+  description: ''
